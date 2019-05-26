@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <LinearLayout
+        android:id="@+id/contenedor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/robot"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/foto2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@android:drawable/ic_menu_camera"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginLeft="40dp"
+        android:onClick="fotos"
+        />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/texto"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@android:drawable/stat_notify_chat"
+            android:layout_marginTop="30dp"
+            android:background="@color/colorPrimary"
+            android:layout_marginLeft="10dp"
+            />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/audio"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@android:drawable/ic_lock_silent_mode_off"
+            android:layout_marginTop="30dp"
+            android:background="@color/colorPrimary"
+            android:layout_marginLeft="10dp"
+            />
+
+
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contenedor"/>
+    <Button
+        android:id="@+id/salir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cerrar sesion"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:onClick="cerrarSesion"/>
+
+</RelativeLayout>
