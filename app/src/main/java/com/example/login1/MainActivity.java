@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
 
     private void setUserData(FirebaseUser user) {
-        Glide.with(this).load(user.getPhotoUrl()).into(circle);
+        Glide.with(this).load(user.getPhotoUrl()).error(R.drawable.robot).into(circle);
 
     }
 
@@ -171,8 +171,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private ArrayList<Modelo> listade(){
         ArrayList<Modelo>listo = new ArrayList<>();
-        listo.add(new Modelo("https://firebasestorage.googleapis.com/v0/b/pruebas-48400.appspot.com/o/imagen_upload?alt=media&token=539125ff-d3ce-47c9-9de6-90e7f4519b4f","kevin","infin"));
-        listo.add(new Modelo("https://firebasestorage.googleapis.com/v0/b/pruebas-48400.appspot.com/o/imagen_upload?alt=media&token=6aa4895f-b2bc-47cd-9aa4-36252072ba54","kevin","infin"));
+        listo.add(new Modelo("https://firebasestorage.googleapis.com/v0/b/pruebas-48400.appspot.com/o/imagen_upload?alt=media&token=539125ff-d3ce-47c9-9de6-90e7f4519b4f","usuario","infin"));
+        listo.add(new Modelo("https://firebasestorage.googleapis.com/v0/b/pruebas-48400.appspot.com/o/imagen_upload?alt=media&token=6aa4895f-b2bc-47cd-9aa4-36252072ba54","usuario","infin"));
+        listo.add(new Modelo("https://firebasestorage.googleapis.com/v0/b/pruebas-48400.appspot.com/o/imagen_upload?alt=media&token=1abbb8b1-a60b-4527-b60b-a5285a7dc057","usuario","infin"));
 
         return listo;
     }
