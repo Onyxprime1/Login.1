@@ -3,15 +3,15 @@ package com.example.login1;
 public class Modelo {
     String imagen;
     String titulo;
-    String descri;
+
 
     public Modelo() {
     }
 
-    public Modelo(String imagen, String titulo, String descri) {
+    public Modelo(String imagen, String titulo) {
         this.imagen = imagen;
         this.titulo = titulo;
-        this.descri = descri;
+
     }
 
     public String getImagen() {
@@ -30,11 +30,4 @@ public class Modelo {
         this.titulo = titulo;
     }
 
-    public String getDescri() {
-        return descri;
-    }
-
-    public void setDescri(String descri) {
-        this.descri = descri;
-    }
 }

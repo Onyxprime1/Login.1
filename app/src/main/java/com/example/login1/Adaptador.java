@@ -37,7 +37,6 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.titulo.setText(lista.get(i).getTitulo());
-        viewHolder.descri.setText(lista.get(i).getDescri());
         Glide.with(activity).load(lista.get(i).getImagen()).error(R.drawable.robot).into(viewHolder.imagen);
     }
 
@@ -50,12 +49,11 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imagen;
         TextView titulo;
-        TextView descri;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.title2);
-            descri = itemView.findViewById(R.id.descripcion);
             imagen = itemView.findViewById(R.id.imagen1);
         }
     }

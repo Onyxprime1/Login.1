@@ -43,7 +43,7 @@ import dmax.dialog.SpotsDialog;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-    private static final int PICK_IMAGEN_CODE = 1000;
+
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     AlertDialog dialog;
     private RecyclerView recy;
     private Adaptador adaptador;
+    private Uri mImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,16 +144,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Toast.makeText(this, "error de conexion", Toast.LENGTH_SHORT).show();
     }
 //-----------------------------------------------------------------------------------------------------------------//
-    public void fotos(View v){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"selec picture"),PICK_IMAGEN_CODE);
+   public void fotos(View v){
+        startActivity(new Intent(this, Storage.class));
+
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+                /*if (requestCode == PICK_IMAGEN_CODE && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+
+            Glide.with(this).load(mImageUri).into(mImageView);
+        }
         if (requestCode == PICK_IMAGEN_CODE){
             dialog.show();
             UploadTask uploadTask  = storageReference.putFile(data.getData());
@@ -176,43 +181,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 }
             });
         }
-    }
+    }*/
 
-    public void descargar(View v){
-        Dowload();
-    }
 
-    public void Dowload(){
-        archivo=storageReference.child("movil.pdf");
-        archivo.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                String url = uri.toString();
-                dowloadFile(MainActivity.this,"movil",".pdf",DIRECTORY_DOWNLOADS,url);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-    }
-
-    public void dowloadFile(Context context, String fileName,String fileExtension, String destinationDirectory, String url){
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri uri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName+fileExtension);
-        downloadManager.enqueue(request);
-    }
 
     private ArrayList<Modelo> listade(){
         ArrayList<Modelo>listo = new ArrayList<>();
-        listo.add(new Modelo("https://firebasestorage.googleapis.com/v0/b/pruebas-48400.appspot.com/o/imagen_upload?alt=media&token=539125ff-d3ce-47c9-9de6-90e7f4519b4f","usuario","infin"));
-        listo.add(new Modelo("https://firebasestorage.googleapis.com/v0/b/pruebas-48400.appspot.com/o/imagen_upload?alt=media&token=6aa4895f-b2bc-47cd-9aa4-36252072ba54","usuario","infin"));
-        listo.add(new Modelo("https://firebasestorage.googleapis.com/v0/b/pruebas-48400.appspot.com/o/imagen_upload?alt=media&token=1abbb8b1-a60b-4527-b60b-a5285a7dc057","usuario","infin"));
-
+        listo.add(new Modelo("https://firebasestorage.googleapis.com/v0/b/pruebas-48400.appspot.com/o/imagen_upload?alt=media&token=539125ff-d3ce-47c9-9de6-90e7f4519b4f","usuario"));
         return listo;
     }
 }
