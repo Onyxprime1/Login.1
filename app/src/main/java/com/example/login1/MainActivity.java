@@ -30,6 +30,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -48,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private StorageReference storageReference;
-    private StorageReference archivo;
+    private DatabaseReference mDatabaseReference;
+    private ArrayList<Modelo> lista;
     CircleImageView circle;
     AlertDialog dialog;
     private RecyclerView recy;
@@ -63,16 +69,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         dialog = new SpotsDialog.Builder().setContext(this).build();
         storageReference = FirebaseStorage.getInstance().getReference("imagen_upload");
         firebaseAuth = FirebaseAuth.getInstance();
-
+//-------------------------------------------------------------------------------------------------------------------------------------------
         recy = findViewById(R.id.recy);
+        recy.setHasFixedSize(true);
+        recy.setLayoutManager(new LinearLayoutManager(this));
+        lista = new ArrayList<>();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("uploads");
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        recy.setLayoutManager(manager);
-        adaptador = new Adaptador(listade(),this);
-        recy.setAdapter(adaptador);
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Modelo upload = postSnapshot.getValue(Modelo.class);
+                    lista.add(upload);
+                }
 
+                adaptador = new Adaptador(lista, MainActivity.this);
+                recy.setAdapter(adaptador);
+                            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 
+            }
+        });
+//------------------------------------------------------------------------------------------------------------------------------------------------
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -144,50 +165,5 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Toast.makeText(this, "error de conexion", Toast.LENGTH_SHORT).show();
     }
 //-----------------------------------------------------------------------------------------------------------------//
-   public void fotos(View v){
-        startActivity(new Intent(this, Storage.class));
 
-    }
-
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-                /*if (requestCode == PICK_IMAGEN_CODE && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            mImageUri = data.getData();
-
-            Glide.with(this).load(mImageUri).into(mImageView);
-        }
-        if (requestCode == PICK_IMAGEN_CODE){
-            dialog.show();
-            UploadTask uploadTask  = storageReference.putFile(data.getData());
-            Task<Uri> task = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                    if (!task.isSuccessful()){
-                        Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
-                    }
-                    return storageReference.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()){
-                        String url= task.getResult().toString().substring(0,task.getResult().toString().indexOf("&token"));
-                        Log.d("DIRECTIR",url);
-                        //Glide.with(getApplication()).load(url).into(img);
-                        dialog.dismiss();
-                    }
-                }
-            });
-        }
-    }*/
-
-
-
-    private ArrayList<Modelo> listade(){
-        ArrayList<Modelo>listo = new ArrayList<>();
-        listo.add(new Modelo("https://firebasestorage.googleapis.com/v0/b/pruebas-48400.appspot.com/o/imagen_upload?alt=media&token=539125ff-d3ce-47c9-9de6-90e7f4519b4f","usuario"));
-        return listo;
-    }
 }
