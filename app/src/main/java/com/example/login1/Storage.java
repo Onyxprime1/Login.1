@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -128,12 +129,18 @@ public class Storage extends AppCompatActivity implements View.OnClickListener {
 
                             Toast.makeText(Storage.this, "Upload successful", Toast.LENGTH_LONG).show();
 
+                            Task<Uri> result = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                            result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                     String photoStringLink = uri.toString();
+                                    Modelo upload = new Modelo(mEditTextFileName.getText().toString().trim(),
+                                      photoStringLink);
+                                    String uploadId = mDatabaseReference.push().getKey();
+                                    mDatabaseReference.child(uploadId).setValue(upload);
+                                }
+                            });
 
-
-                            Modelo upload = new Modelo(mEditTextFileName.getText().toString().trim(),
-                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
-                            String uploadId = mDatabaseReference.push().getKey();
-                            mDatabaseReference.child(uploadId).setValue(upload);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
