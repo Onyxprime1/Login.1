@@ -37,7 +37,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.titulo.setText(lista.get(i).getImagen());
-        Glide.with(activity).load(lista.get(i).getTitulo()).error(R.drawable.robot).into(viewHolder.imagen);
+        Glide.with(activity).load(lista.get(i).getTitulo()).fitCenter().centerCrop().error(R.drawable.robot).into(viewHolder.imagen);
     }
 
     @Override
