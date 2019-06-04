@@ -47,8 +47,8 @@ public class Storage extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
         gui();
-        mStorageReference = FirebaseStorage.getInstance().getReference("uploads");
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("uploads");
+        mStorageReference = FirebaseStorage.getInstance().getReference("uploas");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("uploas");
     }
 
     public void gui() {
@@ -131,7 +131,7 @@ public class Storage extends AppCompatActivity implements View.OnClickListener {
 
 
                             Modelo upload = new Modelo(mEditTextFileName.getText().toString().trim(),
-                                    taskSnapshot.toString());
+                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
                             String uploadId = mDatabaseReference.push().getKey();
                             mDatabaseReference.child(uploadId).setValue(upload);
                         }

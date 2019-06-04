@@ -52,48 +52,43 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private GoogleApiClient googleApiClient;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
-    private StorageReference storageReference;
-    private DatabaseReference mDatabaseReference;
     private ArrayList<Modelo> lista;
     CircleImageView circle;
     AlertDialog dialog;
     private RecyclerView recy;
     private Adaptador adaptador;
-    private Uri mImageUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         circle = findViewById(R.id.img);
-        dialog = new SpotsDialog.Builder().setContext(this).build();
-        storageReference = FirebaseStorage.getInstance().getReference("imagen_upload");
         firebaseAuth = FirebaseAuth.getInstance();
-//-------------------------------------------------------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------------------------------
         recy = findViewById(R.id.recy);
         recy.setHasFixedSize(true);
-        recy.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        recy.setLayoutManager(llm);
         lista = new ArrayList<>();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("uploads");
+        DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("uploas");
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Modelo upload = postSnapshot.getValue(Modelo.class);
                     lista.add(upload);
                 }
-
-                adaptador = new Adaptador(lista, MainActivity.this);
+                adaptador = new Adaptador(MainActivity.this, lista);
                 recy.setAdapter(adaptador);
-                            }
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(MainActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-
             }
         });
-//------------------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -166,4 +161,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 //-----------------------------------------------------------------------------------------------------------------//
 
+    public void foto(View v){
+        startActivity(new Intent(this , Storage.class));
+    }
 }

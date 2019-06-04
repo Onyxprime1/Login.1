@@ -29,7 +29,7 @@
         android:layout_marginTop="30dp"
         android:background="@color/colorPrimary"
         android:layout_marginLeft="40dp"
-        android:onClick="fotos"
+        android:onClick="foto"
         />
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/texto"
